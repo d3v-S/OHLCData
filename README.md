@@ -1,7 +1,21 @@
-# OHLCData
+# nse-ohlc-data
 
-## files:
+## what is this?
+- a bunch of scripts that allows one to download nse-ohlc data from various websites, some realtime and others historically as a pandas dataframe.
+- datasources include Moneycontrol, EconomicTimes and Upstox
 
+## how to use?
+- as a module:
+ * download all the scripts in one folder and create a ```__init__.py```
+- just as a script:
+ * download the script that is need by you and see the sample test in test folder about calling the apis.
+- run test:
+ * ```python test.py``` in ```test``` folder, once the whole folder has been downloaded.
+
+
+## other-info
+
+### files:
 - ohlc_download:
   * downloads data from internet using different sources - ET, MC, Upstox
      - ET: 1 min till 300000 countback
@@ -18,10 +32,6 @@
 - test:
   * shows how to use the methods.
 
+- Intraday * .zip:
+  * contains data from 2015-2023 for BNF and NF in 1-min format
 
-## usage:
-### as a module:
-- add __init__.py and use it as anymodule.
-
-## test:
-- go to test folder and ```python test.py```
