@@ -6,11 +6,11 @@
 
 ## how to use?
 - as a module:
- * download all the scripts in one folder and create a ```__init__.py```
+  * download all the scripts in one folder and create a ```__init__.py```
 - just as a script:
- * download the script that is need by you and see the sample test in test folder about calling the apis.
+  * download the script that is need by you and see the sample test in test folder about calling the apis.
 - run test:
- * ```python test.py``` in ```test``` folder, once the whole folder has been downloaded.
+  * ```python test.py``` in ```test``` folder, once the whole folder has been downloaded.
 
 
 ## other-info
