@@ -366,7 +366,7 @@ class MCHelper:
     def getCodeForIndex(index):
         try:
             if index.upper() == "FINNIFTY":
-                return 47      #! not in indices, hence hardcoded
+                return 47      # not in indices, hence hardcoded
             if index.upper() == "BANKNIFTY":
                 return 23
             if index.upper() == "MIDCAP":
@@ -387,7 +387,6 @@ class MCHelper:
             raise DateRangeException()
         return json
 
-    
     @staticmethod
     def genStockUrl(symbol: str, start: str, end: str) -> str:
         # will always be less than or equal to "start". Fix it while making Dataframe, drop dates before start.
