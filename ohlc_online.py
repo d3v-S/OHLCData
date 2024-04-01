@@ -506,7 +506,7 @@ class UpstoxHelper:
     
     @staticmethod
     def readInstrumentsFile(filepath) -> pd.DataFrame:
-        return pd.read_csv(Helper.getPathWhereThisScriptIsExecuting("NSE.csv"), sep=",", engine='python')
+        return pd.read_csv(Helper.getPathWhereThisScriptIsExecuting(filepath), sep=",", engine='python')
     
     @staticmethod
     def getInstrumentKeyFromDataframe(df, symbol):
@@ -524,14 +524,14 @@ class UpstoxHelper:
     @staticmethod
     def getNseInstrument(symbol):
         if UpstoxHelper.nse_instruments is None:
-            UpstoxHelper.nse_instruments = UpstoxHelper.readInstrumentsFile("NSE.csv") 
+            UpstoxHelper.nse_instruments = UpstoxHelper.readInstrumentsFile("./instrument_data/NSE.csv") 
             instrument_key = UpstoxHelper.getInstrumentKeyFromDataframe(UpstoxHelper.nse_instruments, symbol)[0]
         return UpstoxHelper.removeArtifactsFromInstrumentKey(instrument_key)
     
     @staticmethod
     def getBseInstrument(symbol):
         if UpstoxHelper.bse_instruments is None:
-            UpstoxHelper.bse_instruments = UpstoxHelper.readInstrumentsFile("BSE.csv") 
+            UpstoxHelper.bse_instruments = UpstoxHelper.readInstrumentsFile("./instrument_data/BSE.csv") 
             instrument_key = UpstoxHelper.getInstrumentKeyFromDataframe(UpstoxHelper.bse_instruments, symbol)[0]
         return UpstoxHelper.removeArtifactsFromInstrumentKey(instrument_key)
     
