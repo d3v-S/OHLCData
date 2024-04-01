@@ -8,6 +8,7 @@ import pandas as pd
 import dill as pickle
 
 
+
 ### Exceptions:
 
 class DownloadFailedException(Exception):
@@ -36,6 +37,10 @@ class RequestingParamException(Exception):
 
 # instrument key not found
 class InstrumentKeyNotFoundException(Exception):
+    pass
+
+# public key: 
+class DatasourceNotAvailableException(Exception):
     pass
 
 
@@ -170,6 +175,32 @@ class Helper:
         fixed_df = df.shift(1).fillna(0)
         final_df = Helper.groupDataForTimeframe(fixed_df, int(tf)).shift(-1).dropna()
         return final_df
+    
+    # splits a complete dataframe into per day basis
+    # return dict [date] = dataframe    
+    @staticmethod
+    def mapDfToPerDay(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
+        """ 
+        convert yearly data into per day data.
+        Much more efficient than downloading each day data, everytime
+        Returns:
+            date_df_map (dict_) : key:: date, val:: dataframe
+        """
+        date_df_map          = {}
+        df["tmp"]            = df.index
+        df[["date", "time"]] = df["tmp"].astype(str).str.split(expand=True)
+        df_1                 = df.groupby(["date"])
+        for date in df_1.groups:
+            new_df = df_1.get_group(date)
+            # for some unknown reason, for given tf, example 5,
+            # data starts from 9:10
+            # this 9:10 data is basically yesterday's last data.
+            # drop first row:
+            time_row1 = str(list(new_df.index)[0])
+            if "9:15" not in time_row1:
+                new_df = new_df.iloc[1:]
+            date_df_map[date] = new_df
+        return date_df_map
     
     @staticmethod
     def genPath(symbol, start, end):
@@ -597,3 +628,37 @@ class Upstox:
             return Helper.getGroupedDf(self.__df("1minute"), tf)
 
 
+##
+# PUBLIC METHODS / API:
+##
+class HistoricalData:
+    DATASOURCE = "MC"
+    def __init__(self, symbol, start, end):
+        self.datasource_obj = self.__initDatasourceObj(symbol, start, end)
+
+    def currentDatasource(self):
+        return HistoricalData.DATASOURCE
+    
+    def allDatasources(self):
+        return ["MC", "ET", "Upstox"]
+    
+    def setDatasource(self, datasource):
+        HistoricalData.DATASOURCE = datasource
+    
+    def __initDatasourceObj(self, symbol, start, end):
+        if HistoricalData.DATASOURCE == "MC":
+            return MC(symbol, start, end)
+        elif HistoricalData.DATASOURCE == "ET":
+            return ET(symbol, start, end)
+        elif HistoricalData.DATASOURCE == "Upstox":
+            return Upstox(symbol, start, end)
+        else:
+            print(".allDatasources for list of datasources supported")
+            raise DatasourceNotAvailableException()
+    
+    def df(self, tf):
+        return self.datasource_obj.df(tf)
+
+    def dfForDate(self, date, tf):
+        """ returns: dict_ [date] = dataframe"""
+        return Helper.mapDfToPerDay(self.df(tf))[date]

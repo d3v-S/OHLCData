@@ -9,20 +9,31 @@ from ohlc_offline import *
 
 try:
     ET("HDFCBANK", "2024-03-22", "2024-03-26").df(3).to_markdown()
+    print("ET - OK")
 except:
-    print("ET error.")
+    print("ET - Error.")
 
 try:
     MC("HDFCBANK", "2024-03-22", "2024-03-26").df(3).to_markdown()
+    print("MC - OK")
 except:
-    print("MC error")
+    print("MC - Error")
 
 try:
     Upstox("HDFCBANK", "2024-03-22", "2024-03-26").df(3).to_markdown()
+    print("Upstox - OK")
 except:
-    print("Upstox error")
+    print("Upstox - Error")
 
 try:
     BnfOfflineDataSource().getCompleteData().to_markdown()
+    print("Offline - OK")
 except:
-    print("Offline Error")
+    print("Offline - Error")
+
+try:
+    print(HistoricalData("HDFCBANK", "2024-03-22", "2024-03-26").dfForDate("2024-03-22", 3))
+    print("GenericClass - OK")
+except Exception as e:
+    print(f"GenericClass - Error - {e}")
+
