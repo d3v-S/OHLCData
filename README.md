@@ -17,3 +17,11 @@
  
 - test:
   * shows how to use the methods.
+
+
+## usage:
+### as a module:
+- add __init__.py and use it as anymodule.
+
+## test:
+- go to test folder and ```python test.py```
